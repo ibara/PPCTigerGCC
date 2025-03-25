@@ -1,0 +1,52 @@
+--- /Developer/SDKs/MacOSX10.4u.sdk/usr/include/stdio.h.orig	2025-03-01 08:54:23.000000000 -0500
++++ /Developer/SDKs/MacOSX10.4u.sdk/usr/include/stdio.h	2025-03-01 09:12:24.000000000 -0500
+@@ -292,7 +292,7 @@
+ int	 vfprintf(FILE * __restrict, const char * __restrict, va_list) __DARWIN_LDBL_COMPAT(vfprintf);
+ int	 vprintf(const char * __restrict, va_list) __DARWIN_LDBL_COMPAT(vprintf);
+ int	 vsprintf(char * __restrict, const char * __restrict, va_list) __DARWIN_LDBL_COMPAT(vsprintf);
+-#if !defined(_ANSI_SOURCE) && !defined(_POSIX_C_SOURCE)
++#if !defined(_ANSI_SOURCE) && (!defined(_POSIX_C_SOURCE) || (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE > 200112))
+ int	 asprintf(char **, const char *, ...) __DARWIN_LDBL_COMPAT(asprintf);
+ int	 vasprintf(char **, const char *, va_list) __DARWIN_LDBL_COMPAT(vasprintf);
+ #endif
+@@ -407,7 +407,7 @@
+ #define	__sfileno(p)	((p)->_file)
+ 
+ #ifndef _ANSI_SOURCE
+-#ifndef _POSIX_C_SOURCE
++#if !defined(_POSIX_C_SOURCE) || (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE > 200112)
+ #define	feof_unlocked(p)	__sfeof(p)
+ #define	ferror_unlocked(p)	__sferror(p)
+ #define	clearerr_unlocked(p)	__sclearerr(p)
+--- /Developer/SDKs/MacOSX10.4u.sdk/usr/include/sys/signal.h.orig	2025-03-01 02:30:38.000000000 -0500
++++ /Developer/SDKs/MacOSX10.4u.sdk/usr/include/sys/signal.h	2025-03-01 02:31:07.000000000 -0500
+@@ -139,12 +139,14 @@
+ typedef __darwin_mcontext_t		mcontext_t;
+ #endif
+ 
++#if 0
+ #ifndef _POSIX_C_SOURCE
+ #ifndef _MCONTEXT64_T
+ #define _MCONTEXT64_T
+ typedef __darwin_mcontext64_t		mcontext64_t;
+ #endif
+ #endif /* _POSIX_C_SOURCE */
++#endif
+ 
+ #ifndef _PID_T
+ #define _PID_T
+@@ -171,12 +173,14 @@
+ typedef __darwin_ucontext_t		ucontext_t;
+ #endif
+ 
++#if 0
+ #ifndef _POSIX_C_SOURCE
+ #ifndef _UCONTEXT64_T
+ #define _UCONTEXT64_T
+ typedef __darwin_ucontext64_t		ucontext64_t;
+ #endif
+ #endif /* _POSIX_C_SOURCE */
++#endif
+ 
+ #ifndef _UID_T
+ #define _UID_T

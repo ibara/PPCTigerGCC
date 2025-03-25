@@ -1,0 +1,46 @@
+--- as/as.c.orig	2025-02-27 23:10:44.000000000 -0500
++++ as/as.c	2025-02-27 23:10:11.000000000 -0500
+@@ -180,6 +180,10 @@
+ 		*work_argv = NULL; /* NULL means 'not a file-name' */
+ 		continue;
+ 	    }
++	    if(strcmp(arg, "-mmacosx-version-min=10.4") == 0){
++		*work_argv = NULL;
++		continue;
++	    }
+ 
+ 	    /* Keep scanning args looking for flags. */
+ 	    if (arg[1] == '-' && arg[2] == 0) {
+--- as/read.c.orig	2025-02-27 23:10:50.000000000 -0500
++++ as/read.c	2025-02-25 00:50:34.000000000 -0500
+@@ -444,6 +444,7 @@
+ static void s_inlineasm(uintptr_t value);
+ static void s_leb128(uintptr_t sign);
+ static void s_incbin(uintptr_t value);
++static void s_macosx_version_min(void);
+ 
+ #ifdef PPC
+ /*
+@@ -528,6 +529,7 @@
+   { "inlineasmstart",	s_inlineasm,	1	},
+   { "inlineasmend",	s_inlineasm,	0	},
+   { "incbin",	s_incbin,	0	},
++  { "macosx_version_min",	s_macosx_version_min,	0	},
+   { NULL }	/* end sentinel */
+ };
+ 
+@@ -2333,6 +2335,14 @@
+ }
+ #endif /* !defined(I860) i860 has it's own align and org */
+ 
++static
++void
++s_macosx_version_min(
++void)
++{
++	totally_ignore_line();
++}
++
+ /*
+  * s_set() implements the pseudo op:
+  *	.set name , expression
